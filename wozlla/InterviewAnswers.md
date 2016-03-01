@@ -1,8 +1,129 @@
 # 前端题目
+###### 应答者 hauk0101
+###### 日期 2016.02.26-2016.03.01  
 ## Javascript技术题目 
 > 1.请列举一些数组元素去重方法。
 
-作答：
+作答：<br>
+　　1）遍历数组法，新建数组，遍历传入数组，值不在新数组就加入该新数组中。
+
+	//最简单的数组去重法
+	function unique(array)
+	{
+		var n = [];
+		for(var i = 0;i < array.length; i++)
+		{
+			if(n.indexOf(array[i] == -1))
+			{
+				n.push(array[i]);
+			}			
+		}
+		return n;
+	}
+
+　　判断值是否在数组的方法“indexOf”是在ECMAScript5方法，IE8以下不支持，若用兼容低版本，则需再添加其它代码,代码如下：
+	
+	
+	if(!Array.prototype.indexOf)
+	{
+		Array.prototype.indexOf = function(item)
+		{
+			var result = -1, a_item = null;
+			if(this.length == 0)
+			{
+				return result;
+			}
+			for(var i = 0; len = this.length; i < len; i++)
+			{
+				a_item = this[i];
+				if(a_item === item)
+				{
+					result = i;
+					break;
+				}
+			}
+			return result;
+		}
+	}
+
+　　2）对象键值对法，新建1个js对象和1个数组，遍历传入数组时，判断值是否为js对象的键，不是的话给对象新增该键并放入新数组。（判断是否为js对象键时，会自动对传入的键执行“toString()”，不同的键可能会被误认为一样；如a[1]、a["1"]。解决此问题还是需要调用“indexOf”）
+
+	//速度最快，占空间最多
+	function unique2(array)
+	{
+		var n = {}, r = [], len = array.length, val ,type;
+		for(var i = 0; i < array.lenght; i++)
+		{
+			val = array[i];
+			type = typeof val;
+			if(!n[val])
+			{
+				n[val] = [type];
+				r.push(val);
+			}
+			else if(n[val].indexOf(type) < 0)
+			{
+				n[val].push(type);
+				r.push(val);
+			}
+		}
+		return r;
+	}
+
+
+　　3）数组下表判断法，如果当前数组的第i项在当前数组中第一次出现的位置不是i，那么表示第i项是重复的，忽略掉。否则存入结果数组。
+
+	function unique3(array)
+	{
+		var n = [array[0]];
+		for(var i = 1; i < array.length; i++)
+		{
+			if(array.indexOf(array[i] ==i))
+			{
+				n.push(array[i]);
+			}	
+		}
+		return n;
+	}
+
+　　4）排序后相邻去除法，给传入数组排序，排序后相同值相邻，然后遍历时新数组只加入不与前一值重复的值。
+	
+	function unique(array)
+	{
+		array.sort();
+		var re=[array[0]];
+		for(var i = 1; i < array.length; i++)
+		{
+			if(array[i] !== re[re.length -1])
+			{
+				re.push(array[i]);
+			}			
+		}
+		return re;
+	}
+
+　　5）优化遍历数组法，获取没重复的最右一值放入新数组。
+
+	function unique5(array)
+	{
+		var r = [];
+		for(var i = 0, l = array.length; i < l; i++)
+		{
+			for(var j = i + 1; j < l; j++)
+			{
+				if(array[i] === array[j])
+				{
+					j = ++i;
+				}
+			}
+			r.push(array[i]);
+		}
+		return r;
+	}
+
+　　6）借助第三方类库，使用jQuery类库中unique()方法。（只适用于节点对象集合，不适用于字符串数组及数字数组）
+	
+	$.unique(array) //节点对象集合
 
 > 2.Javascript的作用域和作用域链是什么？
 
@@ -13,7 +134,33 @@
 
 > 3.Javascript的变量声明提升是什么意思？
 
-作答：
+作答：<br>
+　　变量声明提升即把变量提升到函数的top的地方。其中变量提升只是提升了变量的声明，并不会把赋值也提升上来。<br>
+　　还有函数提升，即把整个函数都提到前面去。由于js中函数有2种写法，一种是函数表达式，一种是函数声明方式，只有函数声明形式才能被提升。
+
+	//函数声明方式，可提升
+	function myTest1()
+	{
+		foo();
+		function foo()
+		{
+			alert("我来自 foo")；
+		}
+	}
+	myTest1();
+
+	//函数表达式方式,不可提升
+	function myTest2()
+	{
+		goo();
+		var goo = function goo()
+		{
+			alert("我来自 goo");
+		}
+	}
+	myTest2();
+	
+　　参考博客[http://www.cnblogs.com/betarabbit/archive/2012/01/28/2330446.html](http://www.cnblogs.com/betarabbit/archive/2012/01/28/2330446.html)
 
 > 4.如何解决回调层次过深的问题？
 
@@ -46,7 +193,9 @@
 
 > 5.Ajax是指什么？jsonP是指什么？两者的原理分别是？
 
-作答：
+作答：<br>
+　　Ajax全称是“Asynchronous JavaScript and XML”(异步JavaScript和XML)，它是一种在无需重新加载整个网页的情况下，能够更新部分网页的技术。它的原理是在用户和服务器之间加了一个中间层，使用户操作与服务器响应异步化。它的核心是XMLHttpRequest对象，它是Ajax实现的关键——发送异步请求、接收响应及执行回调。<br>
+　　jsonP全称是“JSON with Padding”，它是一个非官方的协议，它允许在服务器端集成Script tags 返回至客户端，通过javascript callback的形式实现跨域访问。其原理是动态添加<script>标签来调用服务器提供的js脚本。
 
 ## Canvas技术题目
 
@@ -78,7 +227,10 @@
 
 >2.在canvas下如何优化文字的渲染速度？
 
-作答：
+作答：<br>
+　　1）不是交互性文字，或动态文字绘制等需求，可直接使用位图来代替。<br>
+　　2）创建一个不可见的缓冲Canvas,文字首先绘制在此Canvas上，当需要显示时，通过drawImage(canvas...)绘制到显示的Canvas上，这样可有效避免直接调用fillText带来的性能降低问题，优化文字的渲染速度。
+
 
 >3.写下几种composite operation。
 
