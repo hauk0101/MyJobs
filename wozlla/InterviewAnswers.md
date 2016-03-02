@@ -8,66 +8,47 @@
 　　1）遍历数组法，新建数组，遍历传入数组，值不在新数组就加入该新数组中。
 
 	//最简单的数组去重法
-	function unique(array)
+	function unique1(array)
 	{
-		var n = [];
-		for(var i = 0;i < array.length; i++)
-		{
-			if(n.indexOf(array[i] == -1))
-			{
-				n.push(array[i]);
-			}			
-		}
-		return n;
+	    var r = new Array();
+	    var isRepeat = false;
+	    for(var i = 0;i < array.length;i++)
+	    {
+	        isRepeat = false;
+	        for(var j =0;j < r.length;j++)
+	        {
+	            if (r[j] === array[i]) {
+	               isRepeat = true;
+	                break;
+	            }
+	        }
+	        if(!isRepeat)
+	        {
+	            r.push(array[i]);
+	        }
+	    }
+	    return r;
 	}
 
-　　判断值是否在数组的方法“indexOf”是在ECMAScript5方法，IE8以下不支持，若用兼容低版本，则需再添加其它代码,代码如下：
-	
-	
-	if(!Array.prototype.indexOf)
-	{
-		Array.prototype.indexOf = function(item)
-		{
-			var result = -1, a_item = null;
-			if(this.length == 0)
-			{
-				return result;
-			}
-			for(var i = 0; len = this.length; i < len; i++)
-			{
-				a_item = this[i];
-				if(a_item === item)
-				{
-					result = i;
-					break;
-				}
-			}
-			return result;
-		}
-	}
-
-　　2）对象键值对法，新建1个js对象和1个数组，遍历传入数组时，判断值是否为js对象的键，不是的话给对象新增该键并放入新数组。（判断是否为js对象键时，会自动对传入的键执行“toString()”，不同的键可能会被误认为一样；如a[1]、a["1"]。解决此问题还是需要调用“indexOf”）
+　　2）对象键值对法，新建1个js对象和1个数组，遍历传入数组时，判断值是否为js对象的键，不是的话给对象新增该键并放入新数组。
 
 	//速度最快，占空间最多
 	function unique2(array)
 	{
-		var n = {}, r = [], len = array.length, val ,type;
-		for(var i = 0; i < array.lenght; i++)
-		{
-			val = array[i];
-			type = typeof val;
-			if(!n[val])
-			{
-				n[val] = [type];
-				r.push(val);
-			}
-			else if(n[val].indexOf(type) < 0)
-			{
-				n[val].push(type);
-				r.push(val);
-			}
-		}
-		return r;
+	    var res=[];
+	    var json={};
+	    var val,type;
+	    for(var i = 0; i < array.length;i++)
+	    {
+	        val = array[i];
+	        type =typeof val;
+	        if(!json[array[i]])
+	        {
+	            res.push(array[i]);
+	            json[array[i]] = 1;
+	        }
+	    }
+	    return res;
 	}
 
 
@@ -78,7 +59,7 @@
 		var n = [array[0]];
 		for(var i = 1; i < array.length; i++)
 		{
-			if(array.indexOf(array[i] ==i))
+			if(array.indexOf(array[i]) ==i)
 			{
 				n.push(array[i]);
 			}	
@@ -88,7 +69,7 @@
 
 　　4）排序后相邻去除法，给传入数组排序，排序后相同值相邻，然后遍历时新数组只加入不与前一值重复的值。
 	
-	function unique(array)
+	function unique4(array)
 	{
 		array.sort();
 		var re=[array[0]];
