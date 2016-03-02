@@ -184,6 +184,7 @@
 	}
 	asyncFun1(fun1);
 
+
 　2）使用Promise或者链式Promise<br>
 　3）使用Async等辅助库，待解是需要引入额外的库，而且代码上也不够直观<br>
 　4）使用Generator<br>
@@ -195,7 +196,7 @@
 
 作答：<br>
 　　Ajax全称是“Asynchronous JavaScript and XML”(异步JavaScript和XML)，它是一种在无需重新加载整个网页的情况下，能够更新部分网页的技术。它的原理是在用户和服务器之间加了一个中间层，使用户操作与服务器响应异步化。它的核心是XMLHttpRequest对象，它是Ajax实现的关键——发送异步请求、接收响应及执行回调。<br>
-　　jsonP全称是“JSON with Padding”，它是一个非官方的协议，它允许在服务器端集成Script tags 返回至客户端，通过javascript callback的形式实现跨域访问。其原理是动态添加<script>标签来调用服务器提供的js脚本。
+　　jsonP全称是“JSON with Padding”，它是一个非官方的协议，它允许在服务器端集成Script tags 返回至客户端，通过javascript callback的形式实现跨域访问。其原理是动态添加&lt;script>标签来调用服务器提供的js脚本。
 
 ## Canvas技术题目
 
@@ -263,11 +264,41 @@
 ## WebGL技术题
 >1.如何兼容性地获取WebGL context?
 
-作答：
+作答：<br>
+　　为了获取canvas的WebGL上下文，请求来自canvas的名为“webgl”的上下文。如果失败，尝试请求“experimental-webgl”（试验性的webgl）。如果同样失败，则显示1个警告来告诉用户，当前浏览器不只是WebGL。
+
+	function initWebGL(canvas)
+	{
+		//创建全局变量
+		window.gl = null;
+		
+		try
+		{
+			//尝试创建标准上下文，如果失败，回退到试验性上下文
+			gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+		}
+		catch(e){}
+		
+		//如果没有GL上下文，则弹出警告提示
+		if(!gl)
+		{
+			alert("WebGL初始化失败，可能是因为您的浏览器不支持。");
+		}
+	}
 
 >2.列出10个常用的WebGL接口。
 
-作答：
+作答：<br>
+　　1）WebGLRenderingContext<br>
+　　2）WebGLProgram<br>
+　　3）WebGLActiveInfo<br>
+　　4）WebGLRenderbuffer<br>
+　　5）WebGLTexture<br>
+　　6）WebGLBuffer<br>
+　　7）WebGLShader<br>
+　　8）WebGLContextEvent<br>
+　　9）WebGLShaderPrecisionFormat<br>
+　　10）WebGLFramebuffer<br>
 
 >3.WebGL如何绘制图片？
 
