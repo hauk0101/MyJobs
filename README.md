@@ -1,2 +1,2 @@
 # myjobs
-Some files or demos about my jobs in here.
+Some interview questions and answers about my jobs in here.
