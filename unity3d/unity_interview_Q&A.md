@@ -66,3 +66,47 @@
 　　1）通过Resources模块，调用它的load函数：可以直接load并返回某个类型的Object,前提是要把这个资源放在Resource命名的文件夹下，Unity不管有没有场景引用，都会将其全部打包到安装包中。<br>
 　　2）通过bundle的形式：即将资源达成asset bundle放在服务器或者本地磁盘，然后使用WWW模块get下来，然后从这个bundle中load某个object。<br>
 　　3）通过AssetDatabase.loadasset：这种方式只在editor范围内有效，游戏运行时没有这个函数，它通常实在开发中调试用的。
+
+>8.Unity中游戏暂停和开始怎么实现？
+
+作答：游戏暂停和开始一般是通过Time.ScaleTime的数值控制的，1.0表示正常，0.0表示停帧，也就是暂停。
+
+>9.Animator Controller中参数类型bool和trigger的区别是什么？分别在何种情况下使用？
+
+作答：两者的区别是动作复原，set trigger设置动作后，它会自动复原，而bool是需要将其设置成false,需要手动操作。当你需要自动控制动画状态时使用trigger,例如适合角色设计动画等单次触发的情况；当你需要手动控制动画状态时使用bool,例如角色射击状态（举枪）和静止状态（放下枪）的切换。
+
+>10.两个对象发生碰撞的必要条件是什么？
+
+作答：主动碰撞双方要有一个Rigidbody存在，并且碰撞双方必须都要有碰撞体组件。如果碰撞双方只有一个刚体，那么有刚体的物体一定要处于运动状态才会发生碰撞事件。也可以说必须相应两者的回调函数OnEnterTrigger。
+
+>11.Lightmapping是什么？为什么要使用？
+
+作答：光照贴图。主要是针对静态物体的烘焙，即将其阴影烘焙到地面的贴图上，达到比较真实的效果，以此来代替游戏场景中的实时灯光效果，以此来降低渲染的消耗。
+
+>12.Unity中，控制3D人物模型位移的方式有几种？Animator组件的Apply Root Motion的作用是？
+
+作答：<br>
+　　1）常用的位移方式有4种组件。<br>
+
+	transform.translate()	//向某方向移动物体多少距离
+	transform.Position()	//在世界空间坐标transform的位置
+	RigidBody.Velocity		//刚体的速度向量
+	RigidBody.AddForce		//添加一个力到刚体，作为结果刚体将开始移动
+	RigidBody.MovePosition	//移动刚体到position
+	NavMeshAgent组件的SetDestination函数，设置自动Path目标点
+	CharacterController组件的Move函数，每次都绝对运动
+	Vector3.MoveToward()	//当前的地点移向目标
+
+　　2）如果勾选了Animator组件的Apply Root Motion选项，角色的Transform将不能通过脚本来直接赋值，而是用过动画的运动来改变，如果不勾选，则可以通过脚本来改变角色的Transform。
+
+>13.Unity中如何实现序列帧动画？
+
+作答：大概有以下几种思路:<br>
+　　1）在NGUI中，将每一帧资源打包成atlas,然后将该图集上添加脚本UISpriteAnimation。<br>
+　　2）使用Shader中的MainTex的Offset，可实现把一整张有规律顺序的2D图片进行单张显示，通过改变offset偏移量，实现顺序显示。<br>
+　　3）使用Animator进行K序列帧动画。<br>
+　　4）使用程序逻辑控制播放，即在固定时间内进行图片切换显示。
+
+>14.对象包含Box Collider 2D组件，且作为trigger使用时，检测是否有对象进入的函数是？
+
+作答：OnTriggerEnter2D()函数。
