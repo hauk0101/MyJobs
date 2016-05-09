@@ -38,8 +38,8 @@
 >4.如何让粒子效果显示在UI前面？（NGUI或UGUI选其一回答）
 
 作答：<br>
-　　1）如果是NGUI，则修改例子的renderQueue,修改尽量大就在所有UI上面，如果希望在两个UI之间，则需要查看NGUI源码。[http://m.blog.csdn.net/blog/yxriyin/44037673](http://m.blog.csdn.net/blog/yxriyin/44037673)<br>
-　　2）如果是UGUI，一种可以使用相机专门处理粒子，一种是设置sortingOrder。[http://www.xuanyusong.com/archives/3435](http://www.xuanyusong.com/archives/3435)
+　　1）如果是NGUI，则修改例子的renderQueue,修改尽量大就在所有UI上面，如果希望在两个UI之间，则需要查看NGUI源码。[参考地址](http://blog.csdn.net/yxriyin/article/details/44037673)<br>
+　　2）如果是UGUI，一种可以使用相机专门处理粒子，一种是设置sortingOrder。[参考地址](http://www.xuanyusong.com/archives/3435)
 
 >5.当一个细小的高速物体撞向另一个较大的物体时，会出现什么情况？如何避免？
 
@@ -110,3 +110,134 @@
 >14.对象包含Box Collider 2D组件，且作为trigger使用时，检测是否有对象进入的函数是？
 
 作答：OnTriggerEnter2D()函数。
+
+>15.Unity实现昼夜交替的方法或思路?
+
+作答：方法一：用两个摄像机挂天空盒，再分别通过开关来控制具体的摄像机enable的值。<br>
+　　　方法二：使用Time of Day插件。<br>
+　　　方法三：写Shader。
+
+>16.Unity5中，使用旧教程中的代码rigidbody.xxx会报错，如何处理？
+
+作答：Unity5为了组件语法更加规范，需要先定义rigidbody为Rigidbody实例，如果当前rigidbody是自己，则需要this.GetComponent<Rigidbody>()获得实例。
+
+>17.Unity的GameObject.find()是深度优先还是广度优先？
+
+作答：Unity的GameObjet.find()是深度优先。
+
+>18.如何判断一个对象是否在摄像机视野范围内？
+
+作答：方法一：直接调用API，OnBeacameVisible()和OnbecameInvisible(),Renderer.isVisible布尔型的变量。<br>
+　　　方法二：参考文章[《【原创】Unity3D 视野检测、方位检测、前后位置判断》](http://www.omuying.com/article/80.aspx);<br>
+　　　方法三：将对象世界坐标转化为屏幕坐标，通过其坐标点是否超出屏幕来判断对象是否在相机视野范围内。
+
+>19.Unity中隐藏鼠标指针的方法是什么？
+
+作答：Unity5.0以及以前的版本可以用Screen.showCursor = false;而官方在Unity5.3之后表示会删除这个属性，并完全使用Cursor.visible = false.
+
+>20.使用Unity导出APK安装包，需要先安装哪些工具？
+
+作答：1）安装java jdk。<br>
+　　　2）配置java环境。<br>
+　　　3）更新安卓SDK。<br>
+　　　4）在Unity中设置SDK路径。<br>
+　　　5）Unity Build Setting中的相关设置。<br>
+
+>21.gameObject.CompareTag("a")和gameObject.tag == "a"两者有区别吗？
+
+作答：尽量使用gameObject.CompareTag("a"),因为后者是在访问物体的tag属性，会在堆上额外的分配空间。如果在循环中使用这样的判断语句，会造成内存资源的浪费。
+
+>22.Unity中有几种灯光？每种灯光的用法举一个例子。
+
+作答：1）Spot——聚光，一般用作手电筒、车灯、剧幕舞台灯等。<br>
+　　　2）Directional——方向光，一般用作模拟太阳光。<br>
+　　　3）Point——点光，一般用作灯泡、武器发光、爆炸效果等。<br>
+　　　4）Area(baked only)——区域光，只用作烘焙。<br>
+>23.Unity触屏控制的相关函数都是什么？（点击，滑动等...）
+
+作答：和Input的API相关，如Input.GetMouseButtonDown();Input.GetTouch();可参考鼠标滑动代码如下：
+
+	void MobileInput()
+	{
+	      if(Input.touchCount <= 0)
+	      return;
+	      //1个手指触摸屏幕
+	      if (Input.touchCount == 1)
+	      {
+		 
+		      if(Input.touches[0].phase == TouchPhase.Began)
+		      {
+		            //记录手指触屏的位置
+		            m_screenpos= Input.touches[0].position;
+		 
+		      }
+		      // 手指移动
+		      else if(Input.touches[0].phase == TouchPhase.Moved)
+		      {
+		          //移动摄像机
+		          Camera.main.transform.Translate(newVector3(Input.touches[0].deltaPosition.x * Time.deltaTime,Input.touches[0].deltaPosition.y * Time.deltaTime, 0));
+		       }
+		      //手指离开屏幕判断移动方向
+		      if(Input.touches[0].phase == TouchPhase.Ended &&
+		      Input.touches[0].phase!= TouchPhase.Canceled)
+		      {
+		          Vector2pos = Input.touches[0].position;
+		          //手指水平移动
+		          if(Mathf.Abs(m_screenpos.x - pos.x) > Mathf.Abs(m_screenpos.y - pos.y))
+		          {
+		              if(m_screenpos.x > pos.x){
+		              //手指向左划动
+		          }
+		          else{
+		              //手指向右划动
+		          }
+		    }
+		    else //手指垂直移动
+		    {
+		        if(m_screenpos.y > pos.y){
+		        //手指向下划动
+		    }
+		    else{
+		        //手指向上划动
+		    }
+		}
+	}
+
+>24.如何在人物模型头顶显示血条？（最好有示例代码）
+
+作答：主要思路是世界坐标，切换为屏幕坐标。
+
+>25.Unity5.3中，加载场景的新方法是什么？
+
+作答：SceneManager.LoadScene().
+
+>26.Unity中的.meta文件有什么作用？
+
+作答：以NGUI的.meta文件为例，内容如下：
+
+	fileFormatVersion: 2
+	guid: 5cdf542ebf1c34832bb4735bbe26f1de
+	folderAsset: yes
+	timeCreated: 1435568565
+	licenseType: Free
+	DefaultImporter:
+	  userData: 
+	  assetBundleName: 
+	  assetBundleVariant: 
+
+　　从NGUI的.meta文件可以看出，其中有一个guid的值，guid是文件的唯一标示，文件里的关联关系都是基于guid而不是基于文件名和文件路径的。当一个新文件创建之后，unity会自动给它生成一个guid。如果在版本管理库中上传meta文件，会导致两个工程的guid不同，则关联关系自然找不到。所以我们也必须把对应的meta文件上传，才能保证项目中的修改能够在其它同事的工程中生效，而不是出现引用丢失，即资源异常。
+
+>27.Unity里的代码Vector3.normalized究竟是什么意思？
+
+作答：单位向量。
+
+>28.MeshRender中material和sharedmaterial的区别？
+
+作答：
+
+29.点击背包中的道具时，射线会穿透UI，使射线碰撞地面。不想让射线穿透UI，该怎么做？
+
+作答：
+
+>30.
+
