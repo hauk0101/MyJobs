@@ -233,11 +233,11 @@
 
 >28.MeshRender中material和sharedmaterial的区别？
 
-作答：
+作答：material是可以共用的。当存在多个物体共用一个material时，sharedmaterial引用这个公共的material,而material则引用单独的一份拷贝。
 
 29.点击背包中的道具时，射线会穿透UI，使射线碰撞地面。不想让射线穿透UI，该怎么做？
 
-作答：
+作答：Physics.Raycast射线检测默认是返回第一个碰撞结果。如果发现UI被穿透，应该检查UI元素是否被正确设置了Collider组件（射线检测的必要前提）。此外该方法也可以用来屏蔽某些元素，通过参数中的layermask进行设置即可屏蔽对应层的物体。
 
 >30.
 
