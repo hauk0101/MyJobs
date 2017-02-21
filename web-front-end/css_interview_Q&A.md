@@ -55,21 +55,48 @@
 
 作答：
 
+* 水平居中
+
 >6.display有哪些值？说明他们的作用。
 
-作答：none
+作答：
+
+* block:块类型。默认宽度为父元素宽度，可设置宽高，换行显示。
+* none：缺省值。像行内元素类型一样显示。
+* inline：行内元素类型。默认宽度为内容宽度，不可设置宽高，同行显示。
+* inline-block：默认宽度为内容宽度，可以设置宽高，同行显示。
+* list-item:像块类型元素一样显示，并添加样式列表标记。
+* table:此元素会作为块级表格来显示。
+* inherit:规定应从父元素继承display属性的值。
 
 >7.position的值relative和absolute定位的原点是？
 
 作答：
 
+* absolute：生成绝对定位的元素，相对于值不为static的第一个父元素进行定位。
+* fixed：生成绝对定位的元素，相对于浏览器窗口进行定位。
+* relative:生成相对定位的元素，相对于其正常位置进行定位。
+* static:默认值。没有定位，元素出现在正常的流中。（忽略top、bottom、left、right、z-index声明）
+* inherit:规定从父元素继承position属性的值。
+
 >8.CSS3有哪些新特性？
 
 作答：
 
+* 圆角：border-radius
+* 多列布局：multi-column layout
+* 阴影和反射：shadow/reflect
+* 文字特效：text-shadow
+* 文字渲染：text-decoration
+* 线性渐变：gradient
+* 旋转：transform
+* 缩放、定位、倾斜、动画、多背景：transform、scale、translate、sken、animation
+
 >9.请解释一下CSS3的Flexbox（弹性盒布局模型），以及适用场景？
 
 作答：
+
+* 
 
 >10.用纯CSS创建一个三角形的原理是什么？
 
