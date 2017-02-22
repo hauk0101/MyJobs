@@ -6,9 +6,21 @@
 
 作答：
 
+* 基本数据类型：Undefined、Null、Boolean、Number、String、Symbol（ES6新增，独一无二且不可变得数据类型）
+
 >2.说说写JavaScript的基本规范？
 
 作答：
+
+* 不要在同一行声明多个变量
+* 请使用 === / ！==来比较true / false或数值
+* 使用对象字面量替代new Array这种形式
+* 不要使用全局函数
+* switch语句必须带有default分支
+* 函数不应该有时候有返回值，有时候没有返回值
+* for循环必须使用大括号
+* if语句必须使用大括号
+* for-in循环中的变量应该使用var关键字明确限定作用域，从而避免作用域污染
 
 >3.JavaScript原型，原型链？有什么特点？
 
