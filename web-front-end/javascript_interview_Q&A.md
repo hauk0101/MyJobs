@@ -26,6 +26,22 @@
 
 作答：
 
+* 每个对象都会再起内部初始化一个属性，就是prototype(原型)，当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，那么他就会去prototype里找这个属性，这个prototype又会有自己的prototype，于是就这样一直找下去，也就是我们平时所说的原型链的概念。
+* 关系：instance.constructor.prototype = instance.__proto__
+* 特点：JavaScript对象通过引用来传递的，我们创建的每个新对象实体中并没有一份属于自己的原型副本。当我们修改原型时，与之相关的对象也会继承这一改变。
+* 当我们需要一个属性时，Javascript引擎就会先看当前对象中是否有这个属性，如果没有的话，就会查找他的Prototype对象是否有这个属性，如此递推下去，一直检索到Object內建对象。
+
+		function Func(){};
+		Func.prototype.name = "Sean";
+		Func.prototype.getInfo = function(){
+			return this.name;
+		}
+		var person = new Func();	//现在可以参考var person = Object.create(oldObject);
+		console.log(person.getInfo());	//它拥有了Func的属性和方法
+		//输出“Sean”
+		console.log(Func.prototype);
+		//输出“Func{name="Sean",getInfo=function()}”
+
 >4.JavaScript有几种类型的值？（堆：原始数据类型，栈：引用数据类型），你能画一下他们的内存图吗？
 
 作答：
