@@ -50,6 +50,23 @@
 
 作答：
 
+* 构造继承
+* 原型继承
+* 实例继承
+* 拷贝继承
+* 原型prototype机制或apply和call方法去实现较简单，建议使用构造函数与原型混合方式
+		
+		function Parent(){
+			this.name = "wang";
+		}
+		function Child(){
+			this.age = 25;
+		}
+		Child.prototype = new Parent();//继承了Parent,通过原型
+		var demo = new Child();
+		console.log(demo.age);
+		console.log(demo.name);//得到被继承的属性
+
 >6.JavaScript创建对象的几种方式？
 
 作答：
@@ -58,17 +75,30 @@
 
 作答：
 
+* 全局函数无法查看局部函数的内部细节，但局部函数可以查看其上层的函数细节，直至全局细节。
+* 当需要从局部函数查找某一属性或方法时，如果当前作用域没有找到，就会上溯到上层作用域查找，直至全局函数，这种组织形式就是作用域链。
+
 >8.谈谈this对象的理解。
 
 作答：
 
+* this总是指向函数的直接调用者（而非间接调用者）
+* 如果有new关键字，this指向new出来的那个对象
+* 在事件中，this指向触发这个事件的对象，特殊的是，IE中attachEvent中的this总是指向全局对象Window
 >9.eval是做什么的？
 
 作答：
 
+* 它的功能是把对应的字符串解析成JS代码并运行；
+* 应该避免使用eval,不安全，非常消耗性能（2次，一次解析成js语句，一次执行）
+* 由JSON字符串转化为JSON对象的时候可以用eval,var obj = eval('('+str+')');
+
 >10.什么是window对象？什么事document对象？
 
 作答：
+
+* window对象是指浏览器打开的窗口
+* document对象时Document对象（HTML文档对象）的一个只读引用，window对象的一个属性
 
 >11.null，undefined的区别？
 
